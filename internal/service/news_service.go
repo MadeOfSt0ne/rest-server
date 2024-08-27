@@ -1,7 +1,8 @@
 package service
 
 import (
-	"rest-server/internal/types"
+	"fmt"
+	"server/internal/types"
 )
 
 type NewsService struct {
@@ -25,7 +26,8 @@ func (s NewsService) UpdateNews(news types.NewsDto) (types.NewsDto, error) {
 		old.Content = news.Content
 	}
 	if len(news.Categories) != 0 {
-		s.store.UpdateCategoriesForNews(news.Id, news.Categories)
+		err := s.store.UpdateCategoriesForNews(news.Id, news.Categories)
+		fmt.Printf("Update failed: %v", err)
 	}
 	err = s.store.UpdateNews(old)
 	if err != nil {
@@ -36,7 +38,10 @@ func (s NewsService) UpdateNews(news types.NewsDto) (types.NewsDto, error) {
 	if err != nil {
 		return news, err
 	}
-	categories := s.store.GetCategoriesForNews(news.Id)
+	categories, err := s.store.GetCategoriesForNews(news.Id)
+	if err != nil {
+		return news, err
+	}
 	updated := types.NewsDto{
 		Id:         fromDB.Id,
 		Title:      fromDB.Title,
@@ -55,7 +60,10 @@ func (s NewsService) GetAllNews() ([]types.NewsDto, error) {
 	}
 
 	for _, val := range news {
-		categories := s.store.GetCategoriesForNews(val.Id)
+		categories, err := s.store.GetCategoriesForNews(val.Id)
+		if err != nil {
+			fmt.Printf("Не удалось получить список категорий: %v", err)
+		}
 		newsWithCategories = append(newsWithCategories,
 			types.NewsDto{
 				Id:         val.Id,

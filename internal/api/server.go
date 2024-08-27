@@ -1,8 +1,8 @@
 package api
 
 import (
-	"rest-server/internal/db"
-	"rest-server/internal/service"
+	"server/internal/db"
+	"server/internal/service"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/jackc/pgx/v5/pgxpool"

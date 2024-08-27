@@ -26,6 +26,6 @@ type NewsStore interface {
 	GetNewsById(id int) (News, error)
 	UpdateNews(news News) error
 	GetAllNews() ([]News, error)
-	GetCategoriesForNews(newsId int) []int
-	UpdateCategoriesForNews(newsId int, categories []int)
+	GetCategoriesForNews(newsId int) ([]int, error)
+	UpdateCategoriesForNews(newsId int, categories []int) error
 }

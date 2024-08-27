@@ -2,8 +2,9 @@ package api
 
 import (
 	"encoding/json"
-	"rest-server/internal/service"
-	"rest-server/internal/types"
+	"server/internal/service"
+	"server/internal/types"
+
 	"strconv"
 
 	"github.com/gofiber/fiber/v3"

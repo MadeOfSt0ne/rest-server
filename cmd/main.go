@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"rest-server/internal/api"
+	"server/internal/api"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -44,6 +44,6 @@ func createTable(dbpool *pgxpool.Pool) {
 		);`
 	_, err := dbpool.Exec(context.Background(), create)
 	if err != nil {
-
+		fmt.Printf("Oops: %v", err)
 	}
 }

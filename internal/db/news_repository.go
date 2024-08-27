@@ -2,7 +2,7 @@ package db
 
 import (
 	"context"
-	"rest-server/internal/types"
+	"server/internal/types"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
