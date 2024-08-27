@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"rest-server/internal/service"
 	"rest-server/internal/types"
 	"strconv"
@@ -42,13 +43,17 @@ func (h *Handler) handleUpdateNews(c fiber.Ctx) error {
 		return fiber.NewError(400, "Неверный формат id")
 	}
 
-	var body types.News
-	if err = c.BodyParser(body); err != nil {
+	var news types.NewsDto
+	if err = json.Unmarshal(c.Body(), &news); err != nil {
 		return fiber.NewError(400, "Неверный формат данных")
 	}
-	if id != body.Id {
+	if id != news.Id {
 		return fiber.NewError(400, "Нельзя изменить Id новости")
 	}
 
+	updated, err := h.srv.UpdateNews(news)
+	if err != nil {
+		return fiber.NewError(500, "Что-то пошло не так")
+	}
 	return c.Status(200).JSON(updated)
 }
