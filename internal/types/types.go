@@ -25,7 +25,7 @@ type NewsCategories struct {
 type NewsStore interface {
 	GetNewsById(id int) (News, error)
 	UpdateNews(news News) error
-	GetAllNews() ([]News, error)
+	GetAllNews(limit, offset int) ([]News, error)
 	GetCategoriesForNews(newsId int) ([]int, error)
 	UpdateCategoriesForNews(newsId int, categories []int) error
 }

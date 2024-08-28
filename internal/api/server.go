@@ -6,6 +6,7 @@ import (
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/sirupsen/logrus"
 )
 
 type APIServer struct {
@@ -20,6 +21,7 @@ func NewAPIServer(addr string, db *pgxpool.Pool) *APIServer {
 	}
 }
 
+// Запуск сервера
 func (s *APIServer) Run() {
 	app := fiber.New()
 
@@ -28,5 +30,5 @@ func (s *APIServer) Run() {
 	newsHandler := NewNewsHandler(newsService)
 	newsHandler.RegisterRoutes(app)
 
-	app.Listen(s.addr)
+	logrus.Fatal(app.Listen(s.addr))
 }
