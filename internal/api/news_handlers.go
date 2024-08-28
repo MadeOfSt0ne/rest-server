@@ -22,12 +22,12 @@ func NewNewsHandler(srv service.NewsService) *Handler {
 
 func (h *Handler) RegisterRoutes(app *fiber.App) {
 	app.Post("/edit/:Id", h.handleUpdateNews)
-	app.Get("/list?limit=:limit&offset=:offset", h.handleGetNews)
+	app.Get("/list", h.handleGetNews)
 }
 
 // Получение списка новостей
 func (h *Handler) handleGetNews(c fiber.Ctx) error {
-	lim := c.FormValue("limit")
+	lim := c.Query("limit")
 
 	limit, err := strconv.Atoi(lim)
 	if err != nil && err != strconv.ErrSyntax {
@@ -35,7 +35,7 @@ func (h *Handler) handleGetNews(c fiber.Ctx) error {
 		return fiber.NewError(400, "Неверный формат количества страниц")
 	}
 
-	offs := c.FormValue("offset")
+	offs := c.Query("offset")
 	offset, err := strconv.Atoi(offs)
 	if err != nil && err != strconv.ErrSyntax {
 		log.Infof("Неверный формат offset: %v", err)
@@ -56,7 +56,7 @@ func (h *Handler) handleGetNews(c fiber.Ctx) error {
 
 // Обновление новости
 func (h *Handler) handleUpdateNews(c fiber.Ctx) error {
-	idString := c.FormValue("Id")
+	idString := c.Params("Id")
 	id, err := strconv.Atoi(idString)
 	if err != nil {
 		log.Infof("Неверный формат id: %v", err)
